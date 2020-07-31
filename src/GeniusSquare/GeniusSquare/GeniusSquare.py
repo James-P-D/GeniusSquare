@@ -11,7 +11,10 @@ import threading
 # pygame screen
 screen = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
 
+top_label = Label(0, 0, TOP_LABEL_WIDTH, TOP_LABEL_HEIGHT, "ROLL DICE")
 dice_strip = np.ndarray(TOTAL_DICE, DiceCell)
+col_labels = np.ndarray(COLS, Label)
+row_labels = np.ndarray(ROWS, Label)
 
 # Global flags
 processing = False
@@ -63,6 +66,13 @@ def initialise():
     dice_strip[5] = DiceCell(CELL_WIDTH * 6, TOP_LABEL_HEIGHT, CELL_WIDTH, CELL_HEIGHT, DICE_5_VALUES)
     dice_strip[6] = DiceCell(CELL_WIDTH * 6, TOP_LABEL_HEIGHT, CELL_WIDTH, CELL_HEIGHT, DICE_6_VALUES)
 
+    for i in range(COLS):
+        col_labels[i] = Label(CELL_WIDTH * (i + 1), TOP_LABEL_HEIGHT + DICE_STRIP_HEIGHT, CELL_WIDTH, CELL_HEIGHT, get_col_label(i))
+    for i in range(ROWS):
+        row_labels[i] = Label(0, TOP_LABEL_HEIGHT + DICE_STRIP_HEIGHT + ((i + 1) * CELL_HEIGHT), CELL_WIDTH, CELL_HEIGHT, get_row_label(i))
+
+
+
     #for col in range(CELL_COLS):
     #    for row in range(CELL_ROWS):            
     #        grid[col, row] = Cell(CELL_WIDTH * col, (CELL_HEIGHT * (row + 1)), CELL_WIDTH, CELL_HEIGHT)
@@ -72,8 +82,13 @@ def initialise():
 ###############################################
 
 def draw_ui():
+    top_label.draw(screen)
     for dice in dice_strip:
         dice.draw(screen)
+    for col_label in col_labels:
+        col_label.draw(screen)
+    for row_label in row_labels:
+        row_label.draw(screen);
 
 ###############################################
 # game_loop()

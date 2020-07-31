@@ -1,6 +1,12 @@
 import pygame
 from Constants import *
 
+def get_row_label(row):
+    return DICE_ROW_IDS[row]
+
+def get_col_label(col):
+    return DICE_COLUMN_IDS[col]
+
 class DiceCell():
     __x = 0
     __y = 0
@@ -21,12 +27,11 @@ class DiceCell():
         pygame.draw.rect(screen, DICE_CELL_BORDER_COLOR, (self.__x, self.__y, self.__width, self.__height), 0)        
         pygame.draw.rect(screen, DICE_CELL_COLOR, (self.__x + DICE_CELL_BORDER_SIZE, self.__y + DICE_CELL_BORDER_SIZE, self.__width - (DICE_CELL_BORDER_SIZE * 2), self.__height - (DICE_CELL_BORDER_SIZE * 2)), 0)
 
-        if (self.__value != -1):
-            label_font = pygame.font.SysFont('courier', DICE_CELL_FONT_SIZE, bold = True)
-            label_text = label_font.render(str(self.get_label()), 1, DICE_CELL_FONT_COLOR)
-            label_x = ((self.__width / 2) - (label_text.get_width() / 2) + self.__x)
-            label_y = ((self.__height / 2) - (label_text.get_height() / 2) + self.__y)
-            screen.blit(label_text, (int(label_x), int(label_y)))
+        label_font = pygame.font.SysFont('courier', DICE_CELL_FONT_SIZE, bold = True)
+        label_text = label_font.render(str(self.get_label()), 1, DICE_CELL_FONT_COLOR)
+        label_x = ((self.__width / 2) - (label_text.get_width() / 2) + self.__x)
+        label_y = ((self.__height / 2) - (label_text.get_height() / 2) + self.__y)
+        screen.blit(label_text, (int(label_x), int(label_y)))
 
     def is_over(self, mouse_x, mouse_y):
         return ((mouse_x >= self.__x) and (mouse_x < (self.__x + self.__width)) and (mouse_y >= self.__y) and (mouse_y < (self.__y + self.__height)))
@@ -39,4 +44,34 @@ class DiceCell():
 
     def get_label(self):
         (col, row) = self.get_value()
-        return DICE_ROW_IDS[row] + DICE_COLUMN_IDS[col]
+        return get_row_label(row) + get_col_label(col)
+
+class Label():
+    __x = 0
+    __y = 0
+    __width = 0
+    __height = 0
+    __label = ""
+
+    def __init__(self, x, y, width, height, label):
+        self.__x = int(x)
+        self.__y = int(y)
+        self.__width = int(width)
+        self.__height = int(height)
+        self.__label = label
+
+    def draw(self, screen):        
+        pygame.draw.rect(screen, LABEL_BORDER_COLOR, (self.__x, self.__y, self.__width, self.__height), 0)        
+        pygame.draw.rect(screen, LABEL_COLOR, (self.__x + LABEL_BORDER_SIZE, self.__y + LABEL_BORDER_SIZE, self.__width - (LABEL_BORDER_SIZE * 2), self.__height - (LABEL_BORDER_SIZE * 2)), 0)
+
+        label_font = pygame.font.SysFont('courier', LABEL_FONT_SIZE, bold = True)
+        label_text = label_font.render(str(self.__label), 1, LABEL_FONT_COLOR)
+        label_x = ((self.__width / 2) - (label_text.get_width() / 2) + self.__x)
+        label_y = ((self.__height / 2) - (label_text.get_height() / 2) + self.__y)
+        screen.blit(label_text, (int(label_x), int(label_y)))
+
+    def is_over(self, mouse_x, mouse_y):
+        return ((mouse_x >= self.__x) and (mouse_x < (self.__x + self.__width)) and (mouse_y >= self.__y) and (mouse_y < (self.__y + self.__height)))
+
+    def set_label(self, label):
+        self.__label = label

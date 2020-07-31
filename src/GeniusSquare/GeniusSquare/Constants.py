@@ -2,6 +2,9 @@
 # Main UI component sizes
 ###############################################
 
+COLS = 6
+ROWS = 6
+
 CELL_WIDTH = 50
 CELL_HEIGHT = CELL_WIDTH
 
@@ -15,10 +18,11 @@ TOP_LABEL_HEIGHT = CELL_HEIGHT
 DICE_STRIP_WIDTH = WINDOW_WIDTH
 DICE_STRIP_HEIGHT = CELL_HEIGHT
 
-WINDOW_HEIGHT = TOP_LABEL_HEIGHT + DICE_STRIP_HEIGHT
+WINDOW_HEIGHT = TOP_LABEL_HEIGHT + DICE_STRIP_HEIGHT + (CELL_HEIGHT * (ROWS + 1))
 
 FONT_SIZE = 20
 BORDER_SIZE = 2
+
 
 ###############################################
 # RGB Colors
@@ -55,6 +59,16 @@ DICE_3_VALUES = [(4, 5), (4, 4), (3, 5), (4, 3), (3, 4), (5, 4)]
 DICE_4_VALUES = [(2, 2), (3, 2), (2, 3), (3, 1), (3, 3), (2, 4)]
 DICE_5_VALUES = [(1, 1), (1, 0), (2, 0), (0, 1), (2, 1), (1, 2)]
 DICE_6_VALUES = [(0, 5), (5, 0), (5, 0), (5, 0), (0, 5), (0, 5)]
+
+###############################################
+# Label properties
+###############################################
+
+LABEL_BORDER_COLOR = WHITE
+LABEL_COLOR = BLACK
+LABEL_BORDER_SIZE = BORDER_SIZE
+LABEL_FONT_COLOR = WHITE
+LABEL_FONT_SIZE = FONT_SIZE
 
 ###############################################
 # PyGame
