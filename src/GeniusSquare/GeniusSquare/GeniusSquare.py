@@ -45,15 +45,9 @@ def initialise():
     
     global dice_strip
     global grid
-        
-    dice_strip[0] = DiceCell(CELL_WIDTH * 1, DICE_STRIP_TOP, CELL_WIDTH, CELL_HEIGHT, DICE_0_VALUES)
-    dice_strip[1] = DiceCell(CELL_WIDTH * 2, DICE_STRIP_TOP, CELL_WIDTH, CELL_HEIGHT, DICE_1_VALUES)
-    dice_strip[2] = DiceCell(CELL_WIDTH * 3, DICE_STRIP_TOP, CELL_WIDTH, CELL_HEIGHT, DICE_2_VALUES)
-    dice_strip[3] = DiceCell(CELL_WIDTH * 4, DICE_STRIP_TOP, CELL_WIDTH, CELL_HEIGHT, DICE_3_VALUES)
-    dice_strip[4] = DiceCell(CELL_WIDTH * 5, DICE_STRIP_TOP, CELL_WIDTH, CELL_HEIGHT, DICE_4_VALUES)
-    dice_strip[5] = DiceCell(CELL_WIDTH * 6, DICE_STRIP_TOP, CELL_WIDTH, CELL_HEIGHT, DICE_5_VALUES)
-    dice_strip[6] = DiceCell(CELL_WIDTH * 6, DICE_STRIP_TOP, CELL_WIDTH, CELL_HEIGHT, DICE_6_VALUES)
 
+    for i in range(TOTAL_DICE):
+        dice_strip[i] = DiceCell(CELL_WIDTH * (i + 1), DICE_STRIP_TOP, CELL_WIDTH, CELL_HEIGHT, DICE_VALUES[i])
     for i in range(COLS):
         col_labels[i] = Label(CELL_WIDTH * (i + 1), COL_LABEL_STRIP_TOP, CELL_WIDTH, CELL_HEIGHT, get_col_label(i))
     for i in range(ROWS):

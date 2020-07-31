@@ -63,13 +63,14 @@ DICE_CELL_BORDER_SIZE = BORDER_SIZE
 DICE_CELL_FONT_COLOR = BLACK
 DICE_CELL_FONT_SIZE = FONT_SIZE
 
-DICE_0_VALUES = [(0, 0), (0, 2), (0, 3), (1, 3), (1, 4), (1, 5)]
-DICE_1_VALUES = [(4, 0), (1, 5), (4, 0), (1, 5), (5, 1), (0, 4)]
-DICE_2_VALUES = [(3, 0), (4, 1), (4, 2), (5, 2), (5, 3), (5, 5)]
-DICE_3_VALUES = [(4, 5), (4, 4), (3, 5), (4, 3), (3, 4), (5, 4)]
-DICE_4_VALUES = [(2, 2), (3, 2), (2, 3), (3, 1), (3, 3), (2, 4)]
-DICE_5_VALUES = [(1, 1), (1, 0), (2, 0), (0, 1), (2, 1), (1, 2)]
-DICE_6_VALUES = [(0, 5), (5, 0), (5, 0), (5, 0), (0, 5), (0, 5)]
+# Dice values
+DICE_VALUES = [[(0, 0), (0, 2), (0, 3), (1, 3), (1, 4), (1, 5)],
+               [(4, 0), (1, 5), (4, 0), (1, 5), (5, 1), (0, 4)],
+               [(3, 0), (4, 1), (4, 2), (5, 2), (5, 3), (5, 5)],
+               [(4, 5), (4, 4), (3, 5), (4, 3), (3, 4), (5, 4)],
+               [(2, 2), (3, 2), (2, 3), (3, 1), (3, 3), (2, 4)],
+               [(1, 1), (1, 0), (2, 0), (0, 1), (2, 1), (1, 2)],
+               [(0, 5), (5, 0), (5, 0), (5, 0), (0, 5), (0, 5)]]
 
 ###############################################
 # Label properties
@@ -85,31 +86,37 @@ LABEL_FONT_SIZE = FONT_SIZE
 # Cell types
 ###############################################
 
+CELL_COLORS = [BLACK,       # Empty cell
+               BLUE,        # Single-cell blue piece
+               BROWN,       # Double-cell brown piece
+               ORANGE,      # Straight triple-cell orange piece
+               PURPLE,      # Corner triple-cell purple piece
+               DARK_GRAY,   # Staight four-cell gray piece
+               RED,         # Zig-zag four-cell red piece
+               YELLOW,      # T-shape four-cell yellow piece
+               CYAN,        # L-shape four-cell cyan piece
+               GREEN]       # Green four-cell square
+
 CELL_BLOCKED = -1
 CELL_EMPTY = 0
-CELL_COLORS = [BLACK,
-               BLUE,
-               BROWN,
-               ORANGE,
-               PURPLE,
-               DARK_GRAY,
-               RED,
-               YELLOW,
-               CYAN,
-               GREEN]
-CELL_TYPE_1 = [[[1]]]
 
+# Single-cell blue piece
+CELL_TYPE_1 = [[[1]]]       
+
+# Double-cell brown piece
 CELL_TYPE_2 = [[[2],
                 [2]],
 
                [[2, 2]]]
 
+# Straight triple-cell orange piece
 CELL_TYPE_3 = [[[3],
                 [3],
                 [3]],
                
                [[3, 3, 3]]]
 
+# Corner triple-cell purple piece
 CELL_TYPE_4 = [[[4, 4],
                 [4, 0]],
 
@@ -122,6 +129,7 @@ CELL_TYPE_4 = [[[4, 4],
                [[0, 4],
                 [4, 4]]]
 
+# Staight four-cell gray piece
 CELL_TYPE_5 = [[[5],
                 [5],
                 [5],
@@ -129,6 +137,7 @@ CELL_TYPE_5 = [[[5],
 
                [[5, 5, 5, 5]]]
 
+# Zig-zag four-cell red piece
 CELL_TYPE_6 = [[[0, 6, 6],
                 [6, 6, 0]],
                
@@ -143,6 +152,7 @@ CELL_TYPE_6 = [[[0, 6, 6],
                 [6, 6],
                 [6, 0]]]
 
+# T-shape four-cell yellow piece
 CELL_TYPE_7 = [[[7, 0],
                 [7, 7],
                 [7, 0]],
@@ -157,6 +167,7 @@ CELL_TYPE_7 = [[[7, 0],
                [[0, 7, 0],
                 [7, 7, 7]]] 
 
+# L-shape four-cell cyan piece
 CELL_TYPE_8 = [[[8, 0],
                 [8, 0],
                 [8, 8]],
@@ -185,9 +196,11 @@ CELL_TYPE_8 = [[[8, 0],
                [[0, 0, 8],
                 [8, 8, 8]]]
 
+# Green four-cell square
 CELL_TYPE_9 = [[[9, 9],
                 [9, 9]]]
 
+# All the pieces in ascending order of size
 PIECE_SHAPES = [CELL_TYPE_1,
                 CELL_TYPE_2,
                 CELL_TYPE_3,
