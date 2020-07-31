@@ -3,7 +3,7 @@ import numpy as np
 from Constants import *
 from UIControls import *
 import threading
-from random import randint
+import random
 import time
 
 ###############################################
@@ -31,7 +31,8 @@ solving = False
 
 def initialise():
     pygame.display.set_caption("Genius Square")
-
+    random.seed(time.perf_counter)
+    
     global dice_strip
     global grid
         
@@ -161,12 +162,13 @@ def roll_dice():
 ###############################################
 
 def roll_dice_on_thread():
+    
     dice_roll_counter = np.zeros(TOTAL_DICE)
     for i in range(len(dice_roll_counter)):
         if (i == 0):
-            dice_roll_counter[i] = int(randint(1, 1))
+            dice_roll_counter[i] = int(random.randint(0, 6))
         else:
-            dice_roll_counter[i] = dice_roll_counter[i - 1] + int(randint(1, 1))
+            dice_roll_counter[i] = dice_roll_counter[i - 1] + int(random.randint(0, 6))
 
     while dice_roll_counter[-1] != 0:
         for i in range(len(dice_roll_counter)):
@@ -240,7 +242,7 @@ def main():
     initialise()
 
     draw_ui()
-    #roll_dice()
+    roll_dice()
 
     game_loop()
 
