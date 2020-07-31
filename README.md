@@ -1,4 +1,4 @@
-# GeniusSquare
+# Genius Square
 Genius Square puzzle solver in Python
 
 ![Screenshot](https://github.com/James-P-D/GeniusSquare/blob/master/screenshot.gif)
@@ -26,3 +26,15 @@ One completed state for the board would be as follows:
 ## Algorithm
 
 ## Usage
+
+## Setup
+
+For Python we need the following:
+
+[pygame](https://www.pygame.org/news) (Tested with v1.9.6)  
+[numpy](https://numpy.org/) (Tested with v1.18.3)  
+
+```
+pip install pygame
+pip install numpy
+```
