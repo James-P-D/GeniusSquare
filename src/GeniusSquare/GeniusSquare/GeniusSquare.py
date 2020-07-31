@@ -3,6 +3,8 @@ import numpy as np
 from Constants import *
 from UIControls import *
 import threading
+from random import randint
+import time
 
 ###############################################
 # Globals
@@ -18,7 +20,8 @@ row_labels = np.ndarray(ROWS, Label)
 solve_label = Label(0, SOLVE_LABEL_TOP, SOLVE_LABEL_WIDTH, SOLVE_LABEL_HEIGHT, "SOLVE")
 
 # Global flags
-processing = False
+rolling_dice = False
+solving = False
 
 ###############################################
 # initialise()
@@ -92,19 +95,48 @@ def draw_ui():
         row_label.draw(screen);
     solve_label.draw(screen)
 
+def roll_dice():
+    dice_roll_counter = np.zeros(TOTAL_DICE)
+    for i in range(len(dice_roll_counter)):
+        if (i == 0):
+            dice_roll_counter[i] = int(randint(1, 10))
+        else:
+            dice_roll_counter[i] = dice_roll_counter[i - 1] + int(randint(1, 10))
+
+    while dice_roll_counter[-1] != 0:
+        for i in range(len(dice_roll_counter)):
+            if (dice_roll_counter[i] > 0):
+                dice_roll_counter[i] -= 1
+                dice_strip[i].inc_value()
+                dice_strip[i].draw(screen)
+        time.sleep(0.1)
+
+
+    print(dice_roll_counter)
+    global rolling_dice
+    rolling_dice = False
+
 ###############################################
 # game_loop()
 ###############################################
 
 def game_loop():
+    global rolling_dice
     game_exit = False
-    clock = pygame.time.Clock()
+    clock = pygame.time.Clock()    
+
     while not game_exit:
         for event in pygame.event.get():
-            if (event.type == pygame.QUIT) and (not processing):
+            if (event.type == pygame.QUIT) and (not (rolling_dice or solving)):
                 game_exit = True;
-            elif (event.type == pygame.MOUSEBUTTONDOWN) and (not processing):
+            elif (event.type == pygame.MOUSEBUTTONDOWN) and (not (rolling_dice or solving)):
                 (mouse_x, mouse_y) = pygame.mouse.get_pos()
+                if (roll_dice_label.is_over(mouse_x, mouse_y)):
+                    rolling_dice = True
+                    thread = threading.Thread(target = roll_dice, args = ())
+                    thread.start()                    
+
+
         pygame.display.update()
         clock.tick(CLOCK_TICK)
     pygame.quit()
