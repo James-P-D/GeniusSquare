@@ -7,7 +7,7 @@ Genius Square puzzle solver in Python
 
 [The Genius Square](https://www.happypuzzle.co.uk/products/genius-square.aspx) is a spacial awareness game for children. The game consists of seven, six-sided dice, a `6x6` board, 7 'blocker' pieces, and 9 tetris-like pieces of different shapes.
 
-A player rolls all seven of the six-sided dice:
+A player rolls seven six-sided dice:
 
 ![Dice](https://github.com/James-P-D/GeniusSquare/blob/master/dice.jpg)
 
@@ -25,7 +25,11 @@ One completed state for the board would be as follows:
 
 ## Algorithm
 
+
+
 ## Usage
+
+Simply click <kbd>ROLL DICE</kbd> to set the seven blocker cells. Then click <kbd>SOLVE</kbd> to solve the puzzle.
 
 ## Setup
 
