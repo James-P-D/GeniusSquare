@@ -105,7 +105,7 @@ def solve_on_thread():
             piece_cols = len(piece_shape)
             for piece_col in range(piece_cols):
                 for piece_row in range(piece_rows):
-                    if ((grid[col][row] != CELL_EMPTY) and (piece_shape[piece_col][piece_row] != CELL_EMPTY)):
+                    if ((grid[col + piece_col][row + piece_row] != CELL_EMPTY) and (piece_shape[piece_col][piece_row] != CELL_EMPTY)):
                         return False
             return True
 
@@ -115,8 +115,7 @@ def solve_on_thread():
             for piece_col in range(piece_cols):
                 for piece_row in range(piece_rows):
                     if (piece_shape[piece_col][piece_row] != CELL_EMPTY):
-                        grid[col + piece_col][row + piece_row] = piece_shape[piece_col][piece_row]
-            
+                        grid[col + piece_col][row + piece_row] = piece_shape[piece_col][piece_row]            
 
         piece_shapes = PIECE_SHAPES[cell_type_index];
 
