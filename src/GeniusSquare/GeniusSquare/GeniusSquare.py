@@ -204,7 +204,7 @@ def draw_cell(col, row, cell_value):
     y = GRID_TOP + (CELL_WIDTH * row)
     
     if (grid[col, row] == CELL_BLOCKED):
-        pygame.draw.ellipse(screen, TAN, (x+5, y+5, CELL_WIDTH-10, CELL_HEIGHT-10))
+        pygame.draw.ellipse(screen, TAN, (x + BORDER_SIZE, y + BORDER_SIZE, CELL_WIDTH - (2 * BORDER_SIZE), CELL_HEIGHT - (2 * BORDER_SIZE)))
     else:
         pygame.draw.rect(screen, BLACK, (x, y, CELL_WIDTH, CELL_HEIGHT))
         pygame.draw.rect(screen, CELL_COLORS[cell_value], (x + BORDER_SIZE, y + BORDER_SIZE, CELL_WIDTH - (2 * BORDER_SIZE), CELL_HEIGHT - (2 * BORDER_SIZE)))
