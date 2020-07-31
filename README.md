@@ -25,7 +25,7 @@ One completed state for the board would be as follows:
 
 ## Algorithm
 
-
+To solve the puzzle we take one of the largest pieces, in our case the four-cell-square piece and attempt to find a place on the board where it fits in. Once we have done so, we then check the next smallest piece and attempt to find a place where that also fits. At some point we will reach a situation where there are no locations where the current piece can go. At this point we back-track to the previous pieces and see if there are additional locations that can be used. This is continued until we reach the smallest piece, which should fit in the large remaining cell.
 
 ## Usage
 
