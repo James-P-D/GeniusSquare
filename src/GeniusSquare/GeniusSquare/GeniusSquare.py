@@ -48,16 +48,25 @@ def initialise():
     for i in range(ROWS):
         row_labels[i] = Label(0, ROLL_DICE_LABEL_HEIGHT + DICE_STRIP_HEIGHT + ((i + 1) * CELL_HEIGHT), CELL_WIDTH, CELL_HEIGHT, get_row_label(i))
 
-    clear_grid()
+    clear_whole_grid()
 
 ###############################################
 # clear_grid()
 ###############################################
 
-def clear_grid():
+def clear_whole_grid():
     for col in range(COLS):
         for row in range(ROWS):            
             grid[col, row] = CELL_EMPTY
+
+###############################################
+# clear_grid(cell_type)
+###############################################
+
+def clear_grid(cell_type):
+    for col in range(COLS):
+        for row in range(ROWS):            
+            grid[col, row] = CELL_EMPTY if grid[col, row] == cell_type else grid[col, row]
 
 ###############################################
 # draw_ui()
@@ -74,12 +83,69 @@ def draw_ui():
     solve_label.draw(screen)
 
 ###############################################
+# solve()
+###############################################
+
+def solve():
+    global solving
+    solving = True    
+    thread = threading.Thread(target = solve_on_thread, args = ())
+    thread.start()                    
+
+###############################################
+# solve_on_thread()
+###############################################
+
+def solve_on_thread():
+
+    def sub_solve(cell_type_index):
+
+        def piece_fits(piece_shape, col, row):
+            piece_rows = len(piece_shape[0])
+            piece_cols = len(piece_shape)
+            for piece_col in range(piece_cols):
+                for piece_row in range(piece_rows):
+                    if ((grid[col][row] != CELL_EMPTY) and (piece_shape[piece_col][piece_row] != CELL_EMPTY)):
+                        return False
+            return True
+
+        def add_piece(piece_shape, col, row):
+            piece_rows = len(piece_shape[0])
+            piece_cols = len(piece_shape)
+            for piece_col in range(piece_cols):
+                for piece_row in range(piece_rows):
+                    if (piece_shape[piece_col][piece_row] != CELL_EMPTY):
+                        grid[col + piece_col][row + piece_row] = piece_shape[piece_col][piece_row]
+            
+
+        piece_shapes = PIECE_SHAPES[cell_type_index];
+
+        for piece_shape in piece_shapes:
+            piece_rows = len(piece_shape[0])
+            piece_cols = len(piece_shape)
+            for col in range(0, COLS - piece_cols + 1):
+                for row in range(0, ROWS - piece_rows + 1):
+                    if (piece_fits(piece_shape, col, row)):
+                        add_piece(piece_shape, col, row)
+                        draw_grid()
+                        time.sleep(1)
+                        clear_grid(7)
+                        draw_grid()
+                        
+            
+    success = sub_solve(0)
+
+    global solving
+    solving = False
+
+###############################################
 # roll_dice()
 ###############################################
 
 def roll_dice():
+    global rolling_dice
     rolling_dice = True
-    clear_grid()
+    clear_whole_grid()
     thread = threading.Thread(target = roll_dice_on_thread, args = ())
     thread.start()                    
 
@@ -108,7 +174,6 @@ def roll_dice_on_thread():
         grid[col, row] = CELL_BLOCKED
     
     draw_grid()
-    print(dice_roll_counter)
     global rolling_dice
     rolling_dice = False
 
@@ -124,7 +189,6 @@ def draw_grid():
 ###############################################
 # draw_cell()
 ###############################################
-
             
 def draw_cell(col, row, cell_value):
     x = GRID_LEFT + (CELL_HEIGHT * col)
@@ -152,7 +216,8 @@ def game_loop():
                 (mouse_x, mouse_y) = pygame.mouse.get_pos()
                 if (roll_dice_label.is_over(mouse_x, mouse_y)):
                     roll_dice()
-
+                if (solve_label.is_over(mouse_x, mouse_y)):
+                    solve()
 
         pygame.display.update()
         clock.tick(CLOCK_TICK)
@@ -168,7 +233,7 @@ def main():
     initialise()
 
     draw_ui()
-    roll_dice()
+    #roll_dice()
 
     game_loop()
 
