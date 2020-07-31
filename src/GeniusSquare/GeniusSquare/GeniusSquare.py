@@ -13,12 +13,22 @@ import time
 # pygame screen
 screen = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
 
+# Label at top
 roll_dice_label = Label(0, 0, ROLL_DICE_LABEL_WIDTH, ROLL_DICE_LABEL_HEIGHT, "ROLL DICE")
+
+# Strip for 7 dice
 dice_strip = np.ndarray(TOTAL_DICE, DiceCell)
+
+# Column labels (1-6)
 col_labels = np.ndarray(COLS, Label)
+
+# Row labels (A-F)
 row_labels = np.ndarray(ROWS, Label)
+
+# Solve label at bottom
 solve_label = Label(0, SOLVE_LABEL_TOP, SOLVE_LABEL_WIDTH, SOLVE_LABEL_HEIGHT, "SOLVE")
 
+# Actual grid
 grid = np.zeros([COLS, ROWS])
 
 # Global flags
@@ -99,20 +109,26 @@ def solve():
 
 def solve_on_thread():
 
+    ###############################################
+    # sub_solve()
+    ###############################################
+
     def sub_solve(cell_type_index):
 
-        def piece_fits(piece_shape, col, row):
-            piece_rows = len(piece_shape[0])
-            piece_cols = len(piece_shape)
+        ###############################################
+        # piece_fits()
+        ###############################################
+        def piece_fits(piece_shape, piece_cols, piece_rows, col, row):
             for piece_col in range(piece_cols):
                 for piece_row in range(piece_rows):
                     if ((grid[col + piece_col][row + piece_row] != CELL_EMPTY) and (piece_shape[piece_col][piece_row] != CELL_EMPTY)):
                         return False
             return True
 
-        def add_piece(piece_shape, col, row):
-            piece_rows = len(piece_shape[0])
-            piece_cols = len(piece_shape)
+        ###############################################
+        # add_piece()
+        ###############################################
+        def add_piece(piece_shape, piece_cols, piece_rows, col, row):
             for piece_col in range(piece_cols):
                 for piece_row in range(piece_rows):
                     if (piece_shape[piece_col][piece_row] != CELL_EMPTY):
@@ -121,12 +137,13 @@ def solve_on_thread():
         piece_shapes = PIECE_SHAPES[cell_type_index];
 
         for piece_shape in piece_shapes:
-            piece_rows = len(piece_shape[0])
             piece_cols = len(piece_shape)
+            piece_rows = len(piece_shape[0])
+
             for col in range(0, COLS - piece_cols + 1):
                 for row in range(0, ROWS - piece_rows + 1):
-                    if (piece_fits(piece_shape, col, row)):
-                        add_piece(piece_shape, col, row)
+                    if (piece_fits(piece_shape,  piece_cols, piece_rows, col, row)):
+                        add_piece(piece_shape, piece_cols, piece_rows, col, row)
                         draw_grid()
                         time.sleep(SLEEP_DELAY)
                         if (cell_type_index == 0):
@@ -136,12 +153,13 @@ def solve_on_thread():
                                 return True
                         clear_grid(cell_type_index + 1)
                         draw_grid()
-                        time.sleep(SLEEP_DELAY)
-                        
-        return False
-                        
+                        time.sleep(SLEEP_DELAY)                        
+        return False                        
             
-    success = sub_solve(len(PIECE_SHAPES) - 1)
+    if(sub_solve(len(PIECE_SHAPES) - 1)):
+        print("Solved!")
+    else:
+        print("No Solution Found!")
 
     global solving
     solving = False
@@ -154,6 +172,7 @@ def roll_dice():
     global rolling_dice
     rolling_dice = True
     clear_whole_grid()
+    draw_grid()
     thread = threading.Thread(target = roll_dice_on_thread, args = ())
     thread.start()                    
 
