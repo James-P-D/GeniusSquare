@@ -8,20 +8,89 @@ import threading
 # Globals
 ###############################################
 
+# pygame screen
+screen = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
+
+dice_strip = np.ndarray(TOTAL_DICE, DiceCell)
+
+# Global flags
+processing = False
+
 ###############################################
 # initialise()
 ###############################################
 
+def display_it(l):
+    ret_val = ""
+    for (a, b) in l:
+        x = int(b) - 1
+        y = -1
+        if (a == "A"):
+            y = 0
+        elif (a == "B"):
+            y = 1
+        elif (a == "C"):
+            y = 2
+        elif (a == "D"):
+            y = 3
+        elif (a == "E"):
+            y = 4
+        elif (a == "F"):
+            y = 5
+        ret_val = ret_val + "(" + str(x) + ", " + str(y) + "),"
+    print(ret_val)
+
 def initialise():
+
+    display_it(["A1", "C1", "D1", "D2", "E2", "F2"])
+    display_it(["A5", "F2", "A5", "F2", "B6", "E1"])
+    display_it(["A4", "B5", "C5", "C6", "D6", "F6"])
+    display_it(["F5", "E5", "F4", "D5", "E4", "E6"])
+    display_it(["C3", "C4", "D3", "B4", "D4", "E3"])
+    display_it(["B2", "A2", "A3", "B1", "B3", "C2"])
+    display_it(["F1", "A6", "A6", "A6", "F1", "F1"])
+
     pygame.display.set_caption("Genius Square")
+
     global dice_strip
     global grid
         
-    dice_strip[0] = DiceCell(CELL_WIDTH * col, 0, CELL_WIDTH, CELL_HEIGHT, 0)
+    dice_strip[0] = DiceCell(CELL_WIDTH * 1, TOP_LABEL_HEIGHT, CELL_WIDTH, CELL_HEIGHT, DICE_0_VALUES)
+    dice_strip[1] = DiceCell(CELL_WIDTH * 2, TOP_LABEL_HEIGHT, CELL_WIDTH, CELL_HEIGHT, DICE_1_VALUES)
+    dice_strip[2] = DiceCell(CELL_WIDTH * 3, TOP_LABEL_HEIGHT, CELL_WIDTH, CELL_HEIGHT, DICE_2_VALUES)
+    dice_strip[3] = DiceCell(CELL_WIDTH * 4, TOP_LABEL_HEIGHT, CELL_WIDTH, CELL_HEIGHT, DICE_3_VALUES)
+    dice_strip[4] = DiceCell(CELL_WIDTH * 5, TOP_LABEL_HEIGHT, CELL_WIDTH, CELL_HEIGHT, DICE_4_VALUES)
+    dice_strip[5] = DiceCell(CELL_WIDTH * 6, TOP_LABEL_HEIGHT, CELL_WIDTH, CELL_HEIGHT, DICE_5_VALUES)
+    dice_strip[6] = DiceCell(CELL_WIDTH * 6, TOP_LABEL_HEIGHT, CELL_WIDTH, CELL_HEIGHT, DICE_6_VALUES)
 
-    for col in range(CELL_COLS):
-        for row in range(CELL_ROWS):            
-            grid[col, row] = Cell(CELL_WIDTH * col, (CELL_HEIGHT * (row + 1)), CELL_WIDTH, CELL_HEIGHT)
+    #for col in range(CELL_COLS):
+    #    for row in range(CELL_ROWS):            
+    #        grid[col, row] = Cell(CELL_WIDTH * col, (CELL_HEIGHT * (row + 1)), CELL_WIDTH, CELL_HEIGHT)
+
+###############################################
+# draw_ui()
+###############################################
+
+def draw_ui():
+    for dice in dice_strip:
+        dice.draw(screen)
+
+###############################################
+# game_loop()
+###############################################
+
+def game_loop():
+    game_exit = False
+    clock = pygame.time.Clock()
+    while not game_exit:
+        for event in pygame.event.get():
+            if (event.type == pygame.QUIT) and (not processing):
+                game_exit = True;
+            elif (event.type == pygame.MOUSEBUTTONDOWN) and (not processing):
+                (mouse_x, mouse_y) = pygame.mouse.get_pos()
+        pygame.display.update()
+        clock.tick(CLOCK_TICK)
+    pygame.quit()
 
 ###############################################
 # main()
@@ -31,9 +100,6 @@ def main():
     pygame.init()
     
     initialise()
-    
-    # Put this line back in to run the demo game from the README.MD
-    #set_default_game()
 
     draw_ui()
 
