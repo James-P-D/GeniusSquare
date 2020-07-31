@@ -25,12 +25,13 @@ SOLVE_LABEL_TOP = COL_LABEL_STRIP_TOP + CELL_HEIGHT + (ROWS * CELL_HEIGHT)
 SOLVE_LABEL_WIDTH = WINDOW_WIDTH
 SOLVE_LABEL_HEIGHT = CELL_HEIGHT
 
+GRID_TOP = ROLL_DICE_LABEL_HEIGHT + DICE_STRIP_HEIGHT + CELL_HEIGHT
+GRID_LEFT = CELL_WIDTH
 
 WINDOW_HEIGHT = ROLL_DICE_LABEL_HEIGHT + DICE_STRIP_HEIGHT + CELL_HEIGHT + (CELL_HEIGHT * ROWS ) + SOLVE_LABEL_HEIGHT
 
 FONT_SIZE = 20
 BORDER_SIZE = 2
-
 
 ###############################################
 # RGB Colors
@@ -45,7 +46,9 @@ YELLOW = (255, 255, 0)
 BROWN = (210, 105, 30)
 ORANGE = (255, 165, 0)
 DARK_GRAY = (140, 140, 140)
+PURPLE = (128, 0, 128)
 CYAN = (0, 255, 255)
+TAN = (220, 202, 152)
 
 ###############################################
 # Dice properties
@@ -77,6 +80,23 @@ LABEL_COLOR = BLACK
 LABEL_BORDER_SIZE = BORDER_SIZE
 LABEL_FONT_COLOR = WHITE
 LABEL_FONT_SIZE = FONT_SIZE
+
+###############################################
+# Cell types
+###############################################
+
+CELL_BLOCKED = -1
+CELL_EMPTY = 0
+CELL_COLORS = [BLACK,
+               BLUE,
+               BROWN,
+               ORANGE,
+               PURPLE,
+               DARK_GRAY,
+               RED,
+               YELLOW,
+               CYAN,
+               GREEN]
 
 ###############################################
 # PyGame

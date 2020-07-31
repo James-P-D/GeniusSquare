@@ -19,6 +19,8 @@ col_labels = np.ndarray(COLS, Label)
 row_labels = np.ndarray(ROWS, Label)
 solve_label = Label(0, SOLVE_LABEL_TOP, SOLVE_LABEL_WIDTH, SOLVE_LABEL_HEIGHT, "SOLVE")
 
+grid = np.zeros([COLS, ROWS])
+
 # Global flags
 rolling_dice = False
 solving = False
@@ -27,36 +29,7 @@ solving = False
 # initialise()
 ###############################################
 
-def display_it(l):
-    ret_val = ""
-    for (a, b) in l:
-        x = int(b) - 1
-        y = -1
-        if (a == "A"):
-            y = 0
-        elif (a == "B"):
-            y = 1
-        elif (a == "C"):
-            y = 2
-        elif (a == "D"):
-            y = 3
-        elif (a == "E"):
-            y = 4
-        elif (a == "F"):
-            y = 5
-        ret_val = ret_val + "(" + str(x) + ", " + str(y) + "),"
-    print(ret_val)
-
 def initialise():
-
-    display_it(["A1", "C1", "D1", "D2", "E2", "F2"])
-    display_it(["A5", "F2", "A5", "F2", "B6", "E1"])
-    display_it(["A4", "B5", "C5", "C6", "D6", "F6"])
-    display_it(["F5", "E5", "F4", "D5", "E4", "E6"])
-    display_it(["C3", "C4", "D3", "B4", "D4", "E3"])
-    display_it(["B2", "A2", "A3", "B1", "B3", "C2"])
-    display_it(["F1", "A6", "A6", "A6", "F1", "F1"])
-
     pygame.display.set_caption("Genius Square")
 
     global dice_strip
@@ -75,11 +48,16 @@ def initialise():
     for i in range(ROWS):
         row_labels[i] = Label(0, ROLL_DICE_LABEL_HEIGHT + DICE_STRIP_HEIGHT + ((i + 1) * CELL_HEIGHT), CELL_WIDTH, CELL_HEIGHT, get_row_label(i))
 
+    clear_grid()
 
+###############################################
+# clear_grid()
+###############################################
 
-    #for col in range(CELL_COLS):
-    #    for row in range(CELL_ROWS):            
-    #        grid[col, row] = Cell(CELL_WIDTH * col, (CELL_HEIGHT * (row + 1)), CELL_WIDTH, CELL_HEIGHT)
+def clear_grid():
+    for col in range(COLS):
+        for row in range(ROWS):            
+            grid[col, row] = CELL_EMPTY
 
 ###############################################
 # draw_ui()
@@ -95,13 +73,27 @@ def draw_ui():
         row_label.draw(screen);
     solve_label.draw(screen)
 
+###############################################
+# roll_dice()
+###############################################
+
 def roll_dice():
+    rolling_dice = True
+    clear_grid()
+    thread = threading.Thread(target = roll_dice_on_thread, args = ())
+    thread.start()                    
+
+###############################################
+# roll_dice_on_thread()
+###############################################
+
+def roll_dice_on_thread():
     dice_roll_counter = np.zeros(TOTAL_DICE)
     for i in range(len(dice_roll_counter)):
         if (i == 0):
-            dice_roll_counter[i] = int(randint(1, 10))
+            dice_roll_counter[i] = int(randint(1, 1))
         else:
-            dice_roll_counter[i] = dice_roll_counter[i - 1] + int(randint(1, 10))
+            dice_roll_counter[i] = dice_roll_counter[i - 1] + int(randint(1, 1))
 
     while dice_roll_counter[-1] != 0:
         for i in range(len(dice_roll_counter)):
@@ -111,10 +103,37 @@ def roll_dice():
                 dice_strip[i].draw(screen)
         time.sleep(0.1)
 
-
+    for dice in dice_strip:
+        (col, row) = dice.get_value()
+        grid[col, row] = CELL_BLOCKED
+    
+    draw_grid()
     print(dice_roll_counter)
     global rolling_dice
     rolling_dice = False
+
+###############################################
+# draw_grid()
+###############################################
+
+def draw_grid():
+    for col in range(COLS):
+        for row in range(ROWS):
+            draw_cell(col, row, int(grid[col, row]))
+
+###############################################
+# draw_cell()
+###############################################
+
+            
+def draw_cell(col, row, cell_value):
+    x = GRID_LEFT + (CELL_HEIGHT * col)
+    y = GRID_TOP + (CELL_WIDTH * row)
+    
+    if (grid[col, row] == CELL_BLOCKED):
+        pygame.draw.ellipse(screen, TAN, (x+5, y+5, CELL_WIDTH-10, CELL_HEIGHT-10))
+    else:
+        pygame.draw.rect(screen, CELL_COLORS[cell_value], (x, y, CELL_WIDTH, CELL_HEIGHT))
 
 ###############################################
 # game_loop()
@@ -132,9 +151,7 @@ def game_loop():
             elif (event.type == pygame.MOUSEBUTTONDOWN) and (not (rolling_dice or solving)):
                 (mouse_x, mouse_y) = pygame.mouse.get_pos()
                 if (roll_dice_label.is_over(mouse_x, mouse_y)):
-                    rolling_dice = True
-                    thread = threading.Thread(target = roll_dice, args = ())
-                    thread.start()                    
+                    roll_dice()
 
 
         pygame.display.update()
@@ -151,6 +168,7 @@ def main():
     initialise()
 
     draw_ui()
+    roll_dice()
 
     game_loop()
 
