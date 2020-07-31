@@ -127,12 +127,20 @@ def solve_on_thread():
                     if (piece_fits(piece_shape, col, row)):
                         add_piece(piece_shape, col, row)
                         draw_grid()
-                        time.sleep(1)
-                        clear_grid(7)
+                        time.sleep(0.1)
+                        if (cell_type_index == 0):
+                            return True
+                        else:
+                            if (sub_solve(cell_type_index - 1)):
+                                return True
+                        clear_grid(cell_type_index + 1)
                         draw_grid()
+                        time.sleep(0.1)
+                        
+        return False
                         
             
-    success = sub_solve(0)
+    success = sub_solve(len(PIECE_SHAPES) - 1)
 
     global solving
     solving = False
