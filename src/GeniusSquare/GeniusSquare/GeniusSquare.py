@@ -127,7 +127,7 @@ def solve_on_thread():
                     if (piece_fits(piece_shape, col, row)):
                         add_piece(piece_shape, col, row)
                         draw_grid()
-                        time.sleep(0.1)
+                        time.sleep(SLEEP_DELAY)
                         if (cell_type_index == 0):
                             return True
                         else:
@@ -135,7 +135,7 @@ def solve_on_thread():
                                 return True
                         clear_grid(cell_type_index + 1)
                         draw_grid()
-                        time.sleep(0.1)
+                        time.sleep(SLEEP_DELAY)
                         
         return False
                         

@@ -203,3 +203,4 @@ PIECE_SHAPES = [CELL_TYPE_1,
 ###############################################
 
 CLOCK_TICK = 30
+SLEEP_DELAY = 0.01
