@@ -127,3 +127,4 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+/src/GeniusSquare/.vs/GeniusSquare/v16/*.suo
