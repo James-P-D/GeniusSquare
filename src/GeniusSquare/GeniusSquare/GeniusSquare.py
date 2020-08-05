@@ -34,6 +34,7 @@ grid = np.zeros([COLS, ROWS])
 # Global flags
 rolling_dice = False
 solving = False
+solved = False
 
 ###############################################
 # initialise()
@@ -92,10 +93,12 @@ def draw_ui():
 ###############################################
 
 def solve():
-    global solving
-    solving = True    
-    thread = threading.Thread(target = solve_on_thread, args = ())
-    thread.start()                    
+    global solved
+    if (not solved):
+        global solving
+        solving = True    
+        thread = threading.Thread(target = solve_on_thread, args = ())
+        thread.start()                    
 
 ###############################################
 # solve_on_thread()
@@ -151,6 +154,8 @@ def solve_on_thread():
         return False                        
             
     if(sub_solve(len(PIECE_SHAPES) - 1)):
+        global solved
+        solved = True
         print("Solved!")
     else:
         print("No Solution Found!")
@@ -165,6 +170,8 @@ def solve_on_thread():
 def roll_dice():
     global rolling_dice
     rolling_dice = True
+    global solved
+    solved = False
     clear_whole_grid()
     draw_grid()
     thread = threading.Thread(target = roll_dice_on_thread, args = ())
