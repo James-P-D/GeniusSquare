@@ -48,7 +48,7 @@ def initialise():
     global grid
 
     for i in range(TOTAL_DICE):
-        dice_strip[i] = DiceCell(CELL_WIDTH * (i + 1), DICE_STRIP_TOP, CELL_WIDTH, CELL_HEIGHT, DICE_VALUES[i])
+        dice_strip[i] = DiceCell(CELL_WIDTH * i, DICE_STRIP_TOP, CELL_WIDTH, CELL_HEIGHT, DICE_VALUES[i])
     for i in range(COLS):
         col_labels[i] = Label(CELL_WIDTH * (i + 1), COL_LABEL_STRIP_TOP, CELL_WIDTH, CELL_HEIGHT, get_col_label(i))
     for i in range(ROWS):
