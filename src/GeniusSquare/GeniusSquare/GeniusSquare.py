@@ -94,6 +94,12 @@ def draw_ui():
 
 def solve():
     global solved
+    global grid
+
+    if (get_total_blockers(grid) != TOTAL_DICE):
+        print("Incorrect number of blockers!")
+        return
+
     if (not solved):
         global solving
         solving = True    
@@ -230,11 +236,25 @@ def draw_cell(col, row, cell_value):
         pygame.draw.rect(screen, CELL_COLORS[cell_value], (x + BORDER_SIZE, y + BORDER_SIZE, CELL_WIDTH - (2 * BORDER_SIZE), CELL_HEIGHT - (2 * BORDER_SIZE)))
 
 ###############################################
+# get_total_blockers()
+###############################################
+
+def get_total_blockers(grid):
+    total = 0
+    for col in range(COLS):
+        for row in range(ROWS):            
+            if (grid[col, row] == CELL_BLOCKED):
+                total += 1
+    return total
+
+
+###############################################
 # game_loop()
 ###############################################
 
 def game_loop():
     global rolling_dice
+    global grid
     game_exit = False
     clock = pygame.time.Clock()    
 
@@ -248,6 +268,19 @@ def game_loop():
                     roll_dice()
                 if (solve_label.is_over(mouse_x, mouse_y)):
                     solve()
+                if ((mouse_x > GRID_LEFT) and
+                    (mouse_y > GRID_TOP) and
+                    (mouse_x < GRID_LEFT + (COLS * CELL_WIDTH)) and
+                    (mouse_y < GRID_TOP + (ROWS * CELL_HEIGHT))):
+                    col = int((mouse_x - GRID_LEFT) // CELL_WIDTH)
+                    row = int((mouse_y - GRID_TOP) // CELL_HEIGHT)
+                    if (grid[col, row] == CELL_EMPTY):
+                        total_blockers = get_total_blockers(grid)
+                        if (total_blockers < TOTAL_DICE):
+                            grid[col, row] = CELL_BLOCKED
+                    elif (grid[col, row] == CELL_BLOCKED):
+                        grid[col, row] = CELL_EMPTY
+                    draw_cell(col, row, int(grid[col, row]))
 
         pygame.display.update()
         clock.tick(CLOCK_TICK)
