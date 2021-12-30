@@ -31,6 +31,12 @@ To solve the puzzle we take one of the largest pieces, in our case the four-cell
 
 Simply click <kbd>ROLL DICE</kbd> to set the seven blocker cells. Then click <kbd>SOLVE</kbd> to solve the puzzle.
 
+Alternatively, after rolling the dice, you can toggle the location of blocker peices. Note however that by manually choosing the location of blocker peices, it is possible to create unsolveable puzzles such as the one below:
+
+![Screenshot](https://github.com/James-P-D/GeniusSquare/blob/master/unsolvable.gif)
+
+After ~8 minutes of running, the game will produce a message in the console stating `No Solution Found!`.
+
 ## Setup
 
 For Python we need the following:
