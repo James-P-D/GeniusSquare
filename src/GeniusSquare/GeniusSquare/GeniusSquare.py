@@ -31,7 +31,7 @@ solve_label = Label(0, SOLVE_LABEL_TOP, SOLVE_LABEL_WIDTH, SOLVE_LABEL_HEIGHT, "
 
 def initialise(dice_strip, grid):
     pygame.display.set_caption("Genius Square")
-    random.seed(time.perf_counter)
+    random.seed(time.perf_counter())
 
     for i in range(TOTAL_DICE):
         dice_strip[i] = DiceCell(CELL_WIDTH * i, DICE_STRIP_TOP, CELL_WIDTH, CELL_HEIGHT, DICE_VALUES[i])
